@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html data-require="math cross-site-ajax-hack graphie word-problems">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Reading line charts 1</title>
+	<script src="../khan-exercise.js"></script>
+	<script>
+		function getData( states, callback ) {
+
+			var request = encodeURIComponent( JSON.stringify({
+				apiVersion: "1.0",
+				queries: [{
+					qt: "sliceDataByConcept",
+					dsid: "c8op9mhgodplq_",
+					v: 3,
+					id: "state_total_slice",
+					ms: {
+						fd: [],
+						m: {
+							dsid: "c8op9mhgodplq_",
+							v: 3,
+							id: "median_income_constant"
+						}
+					},
+					limit: 1501,
+					pdim: {
+						dsid: "c8op9mhgodplq_",
+						v: 3,
+						id: "state"
+					},
+					pid: states
+				}]
+			}));;
+
+			jQuery.ajax({
+				url: 'http://www.google.com/publicdata/query?jsq=' + request,
+				type: 'GET',
+				success: function(res) {
+					callback( JSON.parse( jQuery( res.responseText ).filter( "p" ).text() ) );
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<div class="exercise">
+	<div class="vars">
+		<var id="STATES">[ usStatePostal( 1 ), usStatePostal( 2 ), usStatePostal( 3 ), usStatePostal( 4 ) ]</var>
+	</div>
+	<div class="problems">
+		<div>
+			<p class="question">Median Household Income by State (in constant 2010 dollars)</p>
+			<div class="graphie" id="scatter">
+				getData( STATES, function( data ) {
+					console.log( data );
+
+					var years = data.results[0].t;
+					var yMax = Math.max.apply( Math, jQuery.map( data.results[0].v, function( series ) {
+						return series.m[0];
+					})) * 1.1;
+
+					init({
+						range: [ [ -2, years.length + 1 ], [ -5000, yMax ] ],
+						scale: [ 600 / (years.length + 3), 400 / yMax ]
+					});
+
+					line( [ 0, 0 ], [ years.length, 0 ] );
+					line( [ 0, 0 ], [ 0, yMax ] );
+
+					jQuery.each( years, function( x, year ) {
+						if ( x % 2 === 0 ) {
+							label( [ x, 0 ], year, "below", false );
+						}
+					});
+
+					for( y = 5000; y &lt;= yMax; y += 5000 ) {
+						label( [ 0, y ], y, "left", false );
+					}
+
+					var colors = [ BLUE, GREEN, PINK, ORANGE ];
+
+					jQuery.each( data.results[0].v, function( n, series ) {
+						path( jQuery.map( series.m[0], function( y, x ) {
+							return [[ x, y ]];
+						}), { stroke: colors[ n ] } );
+					});
+
+				});
+			</div>
+
+			<div class="graphie">
+				init({ range: [ [ 0, 20 ], [ 0, 5 ] ], scale: [ 15, 15 ] });
+				path([ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ], [ 2, 1 ], [ 1, 1 ] ], { stroke: null, fill: ORANGE } );
+				label( [ 2, 1.5 ], usState( 4 ), "right", false );
+				path([ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 3 ], [ 1, 3 ] ], { stroke: null, fill: PINK } );
+				label( [ 2, 3.5 ], usState( 3 ), "right", false );
+
+				path([ [ 11, 1 ], [ 11, 2 ], [ 12, 2 ], [ 12, 1 ], [ 11, 1 ] ], { stroke: null, fill: GREEN } );
+				label( [ 12, 1.5 ], usState( 2 ), "right", false );
+				path([ [ 11, 3 ], [ 11, 4 ], [ 12, 4 ], [ 12, 3 ], [ 11, 3 ] ], { stroke: null, fill: BLUE } );
+				label( [ 12, 3.5 ], usState( 1 ), "right", false );
+			</div>
+
+			<div class="solution" data-type="multiple">
+			</div>
+
+			<div class="hints">
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
