@@ -2,7 +2,7 @@
 <html data-require="math cross-site-ajax-hack graphie word-problems">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Reading line charts 1</title>
+	<title>Reading line charts 2</title>
 	<script src="../khan-exercise.js"></script>
 	<script>
 		function getData( states, callback ) {
@@ -46,6 +46,7 @@
 	<div class="exercise">
 	<div class="vars">
 		<var id="STATES">[ usStatePostal( 1 ), usStatePostal( 2 ), usStatePostal( 3 ), usStatePostal( 4 ) ]</var>
+		<var id="SOLUTION">""</var>
 	</div>
 	<div class="problems">
 		<div>
@@ -62,9 +63,6 @@
 						scale: [ 600 / (years.length + 3), 400 / yMax ]
 					});
 
-					line( [ 0, 0 ], [ years.length, 0 ] );
-					line( [ 0, 0 ], [ 0, yMax ] );
-
 					jQuery.each( years, function( x, year ) {
 						if ( x % 2 === 0 ) {
 							label( [ x, 0 ], year, "below", false );
@@ -73,14 +71,24 @@
 
 					for( y = 5000; y &lt;= yMax; y += 5000 ) {
 						label( [ 0, y ], y, "left", false );
+						line( [ 0, y ], [ years.length, y ], { stroke: "#ddd" } );
 					}
 
+					line( [ 0, 0 ], [ years.length, 0 ] );
+					line( [ 0, 0 ], [ 0, yMax ] );
+
 					var colors = [ BLUE, GREEN, PINK, ORANGE ];
+
+					var max = -100000;
 
 					jQuery.each( data.results[0].v, function( n, series ) {
 						path( jQuery.map( series.m[0], function( y, x ) {
 							return [[ x, y ]];
 						}), { stroke: colors[ STATES.indexOf( series.eid ) ] } );
+						if ( series.m[0][series.m[0].length - 1] - series.m[0][0] &gt; max ) {
+							max = series.m[0][series.m[0].length - 1] - series.m[0][0]
+							SOLUTION = series.eid;
+						}
 					});
 
 				});
@@ -99,7 +107,21 @@
 				label( [ 12, 3.5 ], usState( 1 ), "right", false );
 			</div>
 
-			<div class="solution" data-type="multiple">
+			<p>Which state's median household income rose the most from 1984 to 2000?</p>
+
+			<div class="solution" data-type="custom">
+				<div class="instruction">
+					<ul>
+						<li><label><input type="radio" name="solution" value="1"><span class="value"><var>usState( 1 )</var></span></label></li>
+						<li><label><input type="radio" name="solution" value="2"><span class="value"><var>usState( 2 )</var></span></label></li>
+						<li><label><input type="radio" name="solution" value="3"><span class="value"><var>usState( 3 )</var></span></label></li>
+						<li><label><input type="radio" name="solution" value="4"><span class="value"><var>usState( 4 )</var></span></label></li>
+					</ul>
+				</div>
+				<div class="guess">usStatePostal( jQuery( "#solutionarea input:checked" ).val() )</div>
+				<div class="validator-function">
+					return guess === SOLUTION;
+				</div>
 			</div>
 
 			<div class="hints">
