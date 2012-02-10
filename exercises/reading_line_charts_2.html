@@ -52,8 +52,6 @@
 			<p class="question">Median Household Income by State (in constant 2010 dollars)</p>
 			<div class="graphie" id="scatter">
 				getData( STATES, function( data ) {
-					console.log( data );
-
 					var years = data.results[0].t;
 					var yMax = Math.max.apply( Math, jQuery.map( data.results[0].v, function( series ) {
 						return series.m[0];
@@ -82,7 +80,7 @@
 					jQuery.each( data.results[0].v, function( n, series ) {
 						path( jQuery.map( series.m[0], function( y, x ) {
 							return [[ x, y ]];
-						}), { stroke: colors[ n ] } );
+						}), { stroke: colors[ STATES.indexOf( series.eid ) ] } );
 					});
 
 				});
