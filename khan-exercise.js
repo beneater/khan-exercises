@@ -303,7 +303,8 @@ var Khan = (function() {
             "interactive": ["jquery.mobile.vmouse"],
             "mean-and-median": ["stat"],
             "math-model": ["ast"],
-            "simplify": ["math-model", "ast", "expr-helpers", "expr-normal-form", "steps-helpers"]
+            "simplify": ["math-model", "ast", "expr-helpers", "expr-normal-form", "steps-helpers"],
+            "congruency": ["angles", "interactive"]
         },
 
         warnTimeout: function() {
@@ -1303,8 +1304,8 @@ var Khan = (function() {
 
             var timelinecontainer = $("<div id='timelinecontainer'>")
                 .append("<div>\n" +
-                        "<div id='previous-problem' class='simple-button action-gradient'>Previous Problem</div>\n" +
-                        "<div id='previous-step' class='simple-button action-gradient'><span>Previous Step</span></div>\n" +
+                        "<div id='previous-problem' class='simple-button'>Previous Problem</div>\n" +
+                        "<div id='previous-step' class='simple-button'><span>Previous Step</span></div>\n" +
                         "</div>")
                 .insertBefore("#problem-and-answer");
 
@@ -1335,8 +1336,8 @@ var Khan = (function() {
 
             timelinecontainer
                 .append("<div>\n" +
-                        "<div id='next-problem' class='simple-button action-gradient'>Next Problem</div>\n" +
-                        "<div id='next-step' class='simple-button action-gradient'><span>Next Step</span></div>\n" +
+                        "<div id='next-problem' class='simple-button'>Next Problem</div>\n" +
+                        "<div id='next-step' class='simple-button'><span>Next Step</span></div>\n" +
                         "</div>");
 
             $("<div class='user-activity correct-activity'>Started</div>")
@@ -2107,17 +2108,12 @@ var Khan = (function() {
                 );
             }
 
-            // The first hint is free iff the user has already attempted the question
-            if (hintsUsed === 1 && attempts > 0) {
-                gae_bingo.bingo("hints_free_hint");
-                gae_bingo.bingo("hints_free_hint_binary");
-            }
         });
 
         // On an exercise page, replace the "Report a Problem" link with a button
         // to be more clear that it won't replace the current page.
         $("<a>Report a Problem</a>")
-            .attr("id", "report").addClass("simple-button action-gradient green")
+            .attr("id", "report").addClass("simple-button green")
             .replaceAll($(".footer-links #report"));
 
         $("#report").click(function(e) {
@@ -2329,8 +2325,8 @@ var Khan = (function() {
                     '<p><strong>Problem No.</strong> <span class="problem-no"></span></p>' +
                     '<p><strong>Answer:</strong> <span class="answer"></span></p>' +
                     "<p>" +
-                        '<input type="button" class="pass simple-button action-gradient green" value="This problem was generated correctly.">' +
-                        '<input type="button" class="fail simple-button action-gradient orange" value="There is an error in this problem.">' +
+                        '<input type="button" class="pass simple-button green" value="This problem was generated correctly.">' +
+                        '<input type="button" class="fail simple-button orange" value="There is an error in this problem.">' +
                     "</p>" +
                 "</div>"
             );

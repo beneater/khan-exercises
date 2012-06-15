@@ -471,7 +471,8 @@ $.extend(KhanUtil, {
             var scaledPoint = graph.scalePoint(this.coord);
 
             if (this.visible) {
-                this.visibleShape.transform("T"+scaledPoint[0]+","+scaledPoint[1]);
+                this.visibleShape.transform("T" + scaledPoint[0] + "," +
+                    scaledPoint[1]);
             }
             if (!this.fixed && this.visible) {
                 this.mouseTarget.attr({ cx: scaledPoint[0] });
@@ -933,19 +934,19 @@ $.extend(KhanUtil, {
 
         if (arrowWidget.direction === "up") {
             arrowWidget.visibleShape = graph.path([
-                    [arrowWidget.coord[0],                      arrowWidget.coord[1] - 4 / graph.scale[1]],
+                    [arrowWidget.coord[0], arrowWidget.coord[1] - 4 / graph.scale[1]],
                     [arrowWidget.coord[0] - 4 / graph.scale[0], arrowWidget.coord[1] - 4 / graph.scale[1]],
-                    [arrowWidget.coord[0],                      arrowWidget.coord[1] + 4 / graph.scale[1]],
+                    [arrowWidget.coord[0], arrowWidget.coord[1] + 4 / graph.scale[1]],
                     [arrowWidget.coord[0] + 4 / graph.scale[0], arrowWidget.coord[1] - 4 / graph.scale[1]],
-                    [arrowWidget.coord[0],                      arrowWidget.coord[1] - 4 / graph.scale[1]]
+                    [arrowWidget.coord[0], arrowWidget.coord[1] - 4 / graph.scale[1]]
                     ], { stroke: null, fill: KhanUtil.ORANGE });
         } else if (arrowWidget.direction === "down") {
             arrowWidget.visibleShape = graph.path([
-                    [arrowWidget.coord[0],                      arrowWidget.coord[1] + 4 / graph.scale[1]],
+                    [arrowWidget.coord[0], arrowWidget.coord[1] + 4 / graph.scale[1]],
                     [arrowWidget.coord[0] - 4 / graph.scale[0], arrowWidget.coord[1] + 4 / graph.scale[1]],
-                    [arrowWidget.coord[0],                      arrowWidget.coord[1] - 4 / graph.scale[1]],
+                    [arrowWidget.coord[0], arrowWidget.coord[1] - 4 / graph.scale[1]],
                     [arrowWidget.coord[0] + 4 / graph.scale[0], arrowWidget.coord[1] + 4 / graph.scale[1]],
-                    [arrowWidget.coord[0],                      arrowWidget.coord[1] + 4 / graph.scale[1]]
+                    [arrowWidget.coord[0], arrowWidget.coord[1] + 4 / graph.scale[1]]
                     ], { stroke: null, fill: KhanUtil.ORANGE });
         }
 
