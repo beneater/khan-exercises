@@ -1,13 +1,164 @@
 <!DOCTYPE html>
-<html data-require="math graphie math-format">
+<html data-require="math graphie math-format interactive">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Solid geometry</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
-    <div class="exercise">
+<div class="exercise">
     <div class="problems">
+        <div id="interactive">
+            <div class="vars">
+                <var id="S">randRange(1, 7)</var>
+                <!-- A cube!
+                <var id="VERTICES">[
+                    [-0.5, -0.5, -0.5],
+                    [-0.5, -0.5, 0.5],
+                    [-0.5, 0.5, -0.5],
+                    [-0.5, 0.5, 0.5],
+                    [0.5, -0.5, -0.5],
+                    [0.5, -0.5, 0.5],
+                    [0.5, 0.5, -0.5],
+                    [0.5, 0.5, 0.5]
+                ]</var>
+                <var id="FACES">[
+                    { face: [0, 1, 3, 2], color: ORANGE },
+                    { face: [0, 1, 5, 4], color: GREEN },
+                    { face: [0, 4, 6, 2], color: BLUE },
+                    { face: [1, 3, 7, 5], color: BLUE },
+                    { face: [2, 6, 7, 3], color: GREEN },
+                    { face: [4, 5, 7, 6], color: ORANGE }
+                ]</var>
+                -->
+
+                <!-- A prism! -->
+                <var id="VERTICES">[
+                    [-1, 0.5, 1],
+                    [1, 0.5, 1],
+                    [0, -0.5, 1],
+                    [-1, 0.5, -1],
+                    [1, 0.5, -1],
+                    [0, -0.5, -1]
+                ]</var>
+                <var id="FACES">[
+                    { face: [0, 1, 2], color: GRAY },
+                    { face: [3, 4, 5], color: GRAY },
+                    { face: [0, 3, 4, 1], color: ORANGE },
+                    { face: [1, 4, 5, 2], color: BLUE },
+                    { face: [2, 5, 3, 0], color: GREEN }
+                ]</var>
+            </div>
+            <p class="question">
+                What is the volume of this thing:
+            </p>
+            <div class="graphie">
+                init({range: [[-2, 2], [-2, 2]], scale: [100, 100]});
+                addMouseLayer();
+
+                graph.image1 = raphael.set();
+                graph.image2 = raphael.set();
+                graph.images = [raphael.set()];
+
+
+                var c = [0, 0, 5.0];
+                var e = [0, 0, 5.0];
+                var theta = [0, 0, 0];
+
+                graph.transformD = function(a) {
+                    var d = [0, 0, 0];
+                    d[0] = cos(theta[1]) * (sin(theta[2]) * (a[1] - c[1]) +
+                        cos(theta[2]) * (a[0] - c[0])) - sin(theta[1]) *
+                        (a[2] - c[2]);
+                    d[1] = sin(theta[0]) * (cos(theta[1]) * (a[2] - c[2]) +
+                        sin(theta[1]) * (sin(theta[2]) * (a[1] - c[1]) +
+                        cos(theta[2]) * (a[0] - c[0]))) + cos(theta[0]) *
+                        (cos(theta[2]) * (a[1] - c[1]) - sin(theta[2]) *
+                        (a[0] - c[0]));
+                    d[2] = cos(theta[0]) * (cos(theta[1]) * (a[2] - c[2]) +
+                        sin(theta[1]) * (sin(theta[2]) * (a[1] - c[1]) +
+                        cos(theta[2]) * (a[0] - c[0]))) - sin(theta[0]) *
+                        (cos(theta[2]) * (a[1] - c[1]) - sin(theta[2]) *
+                        (a[0] - c[0]));
+                    return d;
+                };
+
+                graph.transform = function(a) {
+                    var d = graph.transformD(a);
+                    var x1 = (d[0] - e[0]) * (e[2] / d[2]);
+                    var y1 = (d[1] - e[1]) * (e[2] / d[2]);
+
+                    return [x1, y1];
+                };
+
+                graph.drawPending = false;
+
+                graph.drawIt = function() {
+                    if (!graph.drawPending) {
+                        graph.drawPending = true;
+                        var depthOf = function(face) {
+                            //var depth = _.max(_.map(face.face, function(f) {
+                            //    return graph.transformD(VERTICES[f])[2];
+                            //}));
+                            var depth = _.reduce(face.face, function(s, f) {
+                                return s + graph.transformD(VERTICES[f])[2];
+                            }, 0) / face.face.length;
+                            return depth;
+                        };
+                        var faces = _.sortBy(FACES, depthOf);
+                        var image = raphael.set();
+                        graph.images.push(image);
+                        _.each(faces, function(face) {
+                            image.push(path(_.map(face.face, function(f) {
+                                return graph.transform(VERTICES[f]);
+                            }),
+                            { fill: face.color, stroke: null, opacity: 0 }));
+                        });
+                        image.attr({ opacity: 1.0 });
+
+                        _.defer(function() {
+                            graph.images.shift().remove();
+                            graph.drawPending = false;
+                        });
+                    }
+
+                };
+
+                var x = -PI / 8;
+                var y = -PI / 6;
+                c = [sin(x) * cos(y) * 5, sin(y) * 5, cos(x) * cos(y) * 5];
+                theta[1] = x;
+                theta[0] = -y;
+                graph.drawIt();
+
+                var mouseTarget = mouselayer.rect(0, 0, 40 * 10, 40 * 10).attr({
+                        fill: "#000", opacity: 0.0
+                    });
+                $(mouseTarget[0]).bind("vmousedown", function(event) {
+                    graph.startX = event.pageX;
+                    graph.startY = event.pageY;
+                    graph.origX = x;
+                    graph.origY = y;
+                    $(document).bind("vmousemove vmouseup",
+                            function(event) {
+                        event.preventDefault();
+                        var dx = event.pageX - graph.startX;
+                        var dy = event.pageY - graph.startY;
+                        x = graph.origX + dx / 200 * PI;
+                        y = graph.origY - dy / 200 * PI;
+                        c = [sin(x) * cos(y) * 5, sin(y) * 5, cos(x) * cos(y) * 5];
+                        theta[1] = x;
+                        theta[0] = -y;
+                        graph.drawIt();
+                        if (event.type === "vmouseup") {
+                            $(document).unbind("vmousemove vmouseup");
+                        }
+                    })
+                });
+
+            </div>
+        </div>
+
         <div id="cube-V">
             <div class="vars">
                 <var id="s">randRange( 1, 7 )</var>
