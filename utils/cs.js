@@ -193,7 +193,9 @@
     };
 
     Embed.prototype = {
-        url: "/cs/new/embedded",
+        url: (typeof Exercise === "undefined" ?
+            "http://znd-cs-exercises-dot-khan-academy.appspot.com" : "") +
+            "/cs/new/embedded",
 
         setCode: function(code) {
             this.postFrame(code);
