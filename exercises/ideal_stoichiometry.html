@@ -21,6 +21,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("C") + molarMass("O") * 2)</var>
                 <var id="P2">"\\text{H}_2\\text{O}"</var>
                 <var id="P2_RATIO">2</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="mgoh2-hcl---mgcl2-h2o" data-type="template" data-calculator>
@@ -36,6 +37,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, (molarMass("Mg") + molarMass("Cl")) * 2)</var>
                 <var id="P2">"\\text{H}_2\\text{O}"</var>
                 <var id="P2_RATIO">2</var>
+                <var id="R1_GIVEN">!!rand(2)</var>
             </div>
         </div>
         <div id="nacl-agno3---agcl-nano3" data-type="template" data-calculator>
@@ -51,6 +53,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Ag") + molarMass("Cl"))</var>
                 <var id="P2">"\\text{NaNO}_3"</var>
                 <var id="P2_RATIO">1</var>
+                <var id="R1_GIVEN">!!rand(2)</var>
             </div>
         </div>
         <div id="c3h8-o2---co2-h2o" data-type="template" data-calculator>
@@ -66,6 +69,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("C") + molarMass("O") * 2)</var>
                 <var id="P2">"\\text{H}_2\\text{O}"</var>
                 <var id="P2_RATIO">4</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="zn-hcl---zncl2-h2" data-type="template" data-calculator>
@@ -81,6 +85,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Zn") + molarMass("Cl") * 2)</var>
                 <var id="P2">"\\text{H}_2"</var>
                 <var id="P2_RATIO">1</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="cu-agno3---ag-cuno32" data-type="template" data-calculator>
@@ -96,6 +101,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Ag"))</var>
                 <var id="P2">"\\text{Cu(NO}_3\\text{)}_2"</var>
                 <var id="P2_RATIO">1</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="zn-cucl2---zncl2-cu" data-type="template" data-calculator>
@@ -111,6 +117,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Zn") + molarMass("Cl") * 2)</var>
                 <var id="P2">"\\text{Cu}"</var>
                 <var id="P2_RATIO">1</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="fe-o2---fe2o3" data-type="template" data-calculator>
@@ -125,6 +132,7 @@
                 <var id="P1_RATIO">2</var>
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Fe") * 2 + molarMass("O") * 3)</var>
                 <var id="P2">""</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="na-cl2---nacl" data-type="template" data-calculator>
@@ -139,6 +147,7 @@
                 <var id="P1_RATIO">2</var>
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Na") + molarMass("Cl"))</var>
                 <var id="P2">""</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="hgo---hg-o2" data-type="template" data-calculator>
@@ -154,6 +163,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("Hg"))</var>
                 <var id="P2">"\\text{O}_2"</var>
                 <var id="P2_RATIO">1</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="h2o2---h2o-o2" data-type="template" data-calculator>
@@ -169,6 +179,7 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("H") * 2 + molarMass("O"))</var>
                 <var id="P2">"\\text{O}_2"</var>
                 <var id="P2_RATIO">1</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
         <div id="kclo3---kcl-o2" data-type="template" data-calculator>
@@ -184,13 +195,13 @@
                 <var id="P1_MOLAR_MASS">roundTo(3, molarMass("K") + molarMass("Cl"))</var>
                 <var id="P2">"\\text{O}_2"</var>
                 <var id="P2_RATIO">3</var>
+                <var id="R1_GIVEN">true</var>
             </div>
         </div>
 
 
         <div id="template" data-calculator data-weight="0">
             <div class="vars">
-                <var id="R1_GIVEN">R2 === "" ? true : !!rand(2)</var>
                 <var id="GIVEN">R1_GIVEN ? R1 : R2</var>
                 <var id="NOT_GIVEN">R1_GIVEN ? R2 : R1</var>
                 <var id="GIVEN_RATIO">R1_GIVEN ? R1_RATIO : R2_RATIO</var>
