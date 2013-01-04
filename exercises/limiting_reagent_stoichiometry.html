@@ -164,7 +164,7 @@
                 <var id="R1_MOL">roundTo(2, R1_MASS / R1_MOLAR_MASS)</var>
                 <var id="R2_MOL">roundTo(2, R2_MASS / R2_MOLAR_MASS)</var>
                 <var id="R1_LIMIT">R1_MOL * R2_RATIO / R1_RATIO &lt; R2_MOL</var>
-                <var id="P1_MOL">R1_LIMIT ? R1_MOL : R2_MOL / 2</var>
+                <var id="P1_MOL">roundTo(2, R1_LIMIT ? R1_MOL * P1_RATIO / R1_RATIO : R2_MOL * P1_RATIO / R2_RATIO)</var>
                 <var id="P1_MASS">roundTo(2, P1_MOL * P1_MOLAR_MASS)</var>
             </div>
             <div class="problem">
@@ -371,7 +371,7 @@
                             </p>
                         </div>
                         <p><code>\qquad
-                            \dfrac{<var>R2</var>}{<var>P1</var>} = \dfrac{<var>R2_RATIO</var>}{<var>P2_RATIO</var>} =
+                            \dfrac{<var>R2</var>}{<var>P1</var>} = \dfrac{<var>R2_RATIO</var>}{<var>P1_RATIO</var>} =
                             \dfrac{\green{<var>plural(R2_MOL, "\\text{ mole}", "\\text{ moles}")</var>}}{x}
                         </code></p>
                         <p>
