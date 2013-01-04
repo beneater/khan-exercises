@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Balancing chemical reactions</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        input.coefficient {
+            width: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="h2-o2---h2o" data-type="template">
+            <div class="vars">
+                <var id="SOLUTION">[2, 1, 2]</var>
+            </div>
+            <div class="problem">
+                <code>\qquad</code>
+                <input type=text" class="coefficient"></input><code>\text{H}_2 +</code>
+                <input type=text" class="coefficient"></input><code>\text{O}_2 \rightarrow</code>
+                <input type=text" class="coefficient"></input><code>\text{H}_2\text{O}</code>
+            </div>
+            <div class="hints">
+                <div>
+                    <p>
+                        There are <code>2 \text{O}</code> on the left and only
+                        <code>1</code> on the right, therefore multiply
+                        <code>\text{H}_2\text{O}</code> by <code>\blue{2}</code>.
+                    </p>
+                    <p><code>\qquad
+                        \text{H}_2 + \text{O}_2 \rightarrow \blue{2}\text{H}_2\text{O}
+                    </code></p>
+                </div>
+                <div>
+                    <p>
+                        That gives us <code>4 \text{H}</code> on the right and
+                        only <code>2</code> on the left, therefore multiply
+                        <code>\text{H}_2</code> by <code>\red{2}</code>.
+                    </p>
+                    <p><code>\qquad
+                        \red{2}\text{H}_2 + \text{O}_2 \rightarrow 2\text{H}_2\text{O}
+                    </code></p>
+                </div>
+                <div>
+                    <p>The balanced equation is:</p>
+                    <p><code>\qquad
+                        2\text{H}_2 + \text{O}_2 \rightarrow 2\text{H}_2\text{O}
+                    </code></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="template" data-weight="0">
+            <p class="question">
+                Balance the following chemical equation:
+            </p>
+            <div class="graphie" style="z-index: -10">
+                // Focus the first input
+                $('.coefficient').eq(0).focus();
+
+                // Pressing enter submits the answer
+                $('.coefficient').on("keypress", function (e) {
+                    if (e.which == 13) {
+                        $('form#answerform').submit();
+                        return false;
+                    }
+                });
+                Khan.scratchpad.disable();
+            </div>
+            <div class="solution" data-type="custom">
+                <div class="instruction">
+                    Balance the equation by entering the correct coefficients.
+                </div>
+                <div class="guess">_.map($("div.problem input"), function(el) { return $(el).val() })</div>
+                <div class="validator-function">
+                    var unanswered = true;
+                    var allCorrect = true;
+                    _(SOLUTION).each(function(correct, n) {
+                        coefficient = guess[n].replace(/[ ]/g, "");
+                        if (coefficient === "") {
+                            coefficient = 1;
+                        } else {
+                            coefficient = parseFloat(coefficient);
+                            unanswered = false;
+                        }
+                        if (coefficient !== correct) {
+                            allCorrect = false;
+                        }
+                    });
+                    if (unanswered) {
+                        return "";
+                    }
+                    return allCorrect;
+                </div>
+                <div class="show-guess">
+                    _(guess).each(function(g, n) {
+                        $("div.problem input").eq(n).val(g);
+                    });
+                </div>
+            </div>
+
+            <div class="hints">
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+
+
