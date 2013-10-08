@@ -1950,7 +1950,15 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
 
             // Assemble the solution area
-            var $input = $('<input type="text">');
+            //var $input = $('<input type="text">');
+            var $input = $("<div>").mathquill('editable').css({
+                    minWidth: "100px",
+                    border: "1px solid #aaa",
+                    padding: "3px",
+                    background: "#fff"
+                }).on("enterPressed", function() {
+                        $("#check-answer-button").click();
+                    });
             var $tex = $('<span class="tex"/>');
             var $error = $('<span class="error"/>').append(
                 $('<span class="buddy"/>'),
@@ -2078,7 +2086,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             return {
                 validator: Khan.answerTypes.expression.createValidatorFunctional(
                         solution, options),
-                answer: function() { return $input.val(); },
+                answer: function() {
+                    var r = $input.mathquill('latex');
+                    r = r.replace(/\\left\(/g, "(");
+                    r = r.replace(/\\right\)/g, ")");
+                    return r;
+                },
                 solution: solution.print(),
                 examples: [
                     explicitMul,

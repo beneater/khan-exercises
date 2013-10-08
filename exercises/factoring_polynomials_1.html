@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html data-require="math math-format">
+<html data-require="math math-format graphie">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Factoring polynomials 1</title>
     <script src="../khan-exercise.js"></script>
+    <script src="http://www.desmos.com/api/v0.2/desmos.js"></script>
+    <script src="http://www.desmos.com/api/v0.2/mathquill.js"></script>
+    <link rel="stylesheet" href="http://www.desmos.com/api/v0.2/mathquill.css" />
 </head>
 <body>
     <div class="exercise">
@@ -23,6 +26,29 @@
 
             <p class="problem">Factor the following expression:</p>
             <p class="question"><code><var>plus(SQUARE + "x^2")</var> + <var>plus( LINEAR + "x" )</var> + <var>CONSTANT</var></code></p>
+            <div id="grapher" style="width: 300px; height: 300px; border: 1px dashed red">
+            </div>
+            <div class="graphie">
+                grapher = new Desmos.Graphpaper(document.getElementById('grapher'));
+                grapher.resize();
+                grapher.setExpression({
+                    'id':'poly',
+                    latex: 'x^2+' + LINEAR + 'x+' + CONSTANT,
+                    color: GREEN
+                });
+                console.log($('.mathquill-editable'));
+
+                $(Exercises).on("newProblem", function() {
+                    console.log("newProblem");
+                    $('.mathquill-editable').on('render', function() {
+                        grapher.setExpression({
+                            id: 'guess',
+                            latex: $(this).mathquill("latex"),
+                            color: BLUE
+                        });
+                    });
+                });
+            </div>
 
             <p class="solution" data-type="expression" data-same-form>(x-<var>A</var>)(x-<var>B</var>)</p>
 
